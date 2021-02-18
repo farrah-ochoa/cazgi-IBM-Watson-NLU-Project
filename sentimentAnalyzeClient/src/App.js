@@ -36,7 +36,7 @@ class App extends React.Component {
   sendForSentimentAnalysis = () => {
     this.setState({sentiment:true});
     let ret = "";
-    let url = ".";
+    let url = "."; 
 
     if(this.state.mode === "url") {
       url = url+"/url/sentiment?url="+document.getElementById("textinput").value;
@@ -48,14 +48,14 @@ class App extends React.Component {
 
       //Include code here to check the sentiment and fomrat the data accordingly
 
-      this.setState({sentimentOutput:response.data});
-      let output = response.data;
-      if(response.data === "positive") {
-        output = <div style={{color:"green",fontSize:20}}>{response.data}</div>
-      } else if (response.data === "negative"){
-        output = <div style={{color:"red",fontSize:20}}>{response.data}</div>
+      this.setState({sentimentOutput:response.data['label']});
+      let output = response.data['label'];
+      if(response.data['label'] === "positive") {
+        output = <div style={{color:"green",fontSize:20}}>{response.data['label']}</div>
+      } else if (response.data['label'] === "negative"){
+        output = <div style={{color:"red",fontSize:20}}>{response.data['label']}</div>
       } else {
-        output = <div style={{color:"orange",fontSize:20}}>{response.data}</div>
+        output = <div style={{color:"yellow",fontSize:20}}>{response.data['label']}</div>
       }
       this.setState({sentimentOutput:output});
     });
@@ -73,14 +73,15 @@ class App extends React.Component {
     ret = axios.get(url);
 
     ret.then((response)=>{
-      this.setState({sentimentOutput:<EmotionTable emotions={response.data}/>});
-  });
+        
+        this.setState({sentimentOutput:<EmotionTable emotions={response.data}/>});
+    });
   }
   
 
   render() {
     return (  
-      <div className="App">
+      <div className="App">Sentiment Analyzer<br/>
       <button className="btn btn-info" onClick={this.renderTextArea}>Text</button>
         <button className="btn btn-dark"  onClick={this.renderTextBox}>URL</button>
         <br/><br/>
